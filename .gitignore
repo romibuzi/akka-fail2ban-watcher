@@ -6,3 +6,6 @@
 *.log
 
 target
+
+# Local db for tests
+fail2ban.sqlite3
