@@ -7,7 +7,7 @@ import akka.stream.scaladsl.{Sink, Source}
 import scala.concurrent.Future
 
 class Watcher {
-  def bans(implicit session: SlickSession): Source[String, NotUsed] = {
+  def bansIps(implicit session: SlickSession): Source[String, NotUsed] = {
     import session.profile.api._
     Slick.source(sql"SELECT ip FROM bans;".as[String])
   }

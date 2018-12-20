@@ -28,7 +28,7 @@ object App {
     val watcher = new Watcher()
 
     watcher
-      .bans
+      .bansIps
       .runWith(watcher.counter)
       .onComplete {
         case Success(counters) =>
