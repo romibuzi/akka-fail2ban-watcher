@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit
 import akka.actor.{ActorSystem, Terminated}
 import akka.stream.ActorMaterializer
 import akka.stream.alpakka.slick.javadsl.SlickSession
+import com.jakewharton.fliptables.FlipTable
 import com.typesafe.config.{Config, ConfigFactory}
 import com.typesafe.scalalogging.Logger
 
@@ -28,11 +29,16 @@ object App {
     val watcher = new Watcher()
 
     watcher
-      .bansIps
-      .runWith(watcher.counter)
+      .scanBannedIPs
+      .runWith(watcher.countBansPerIP)
       .onComplete {
         case Success(counters) =>
-          appLogger.info(s"ips and number of bans : ${counters.toSeq.sortBy(- _._2)}")
+          val headers = Array("IP", "Number of Bans")
+          val data = counters.toArray.sortBy(_._2).map { case (ip, bansCount) =>
+            Array(ip, bansCount.toString)
+          }
+          println(FlipTable.of(headers, data))
+
           appLogger.info(s"Stream successful: ${formatDuration(duration(startTime, LocalDateTime.now))}")
           sys.terminate().onComplete(logTermination)(sys.dispatcher)
         case Failure(err) =>

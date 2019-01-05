@@ -17,10 +17,10 @@ class WatcherSpec extends FlatSpec with Matchers {
   implicit val exc: ExecutionContext = sys.dispatcher
   val config: Config = ConfigFactory.load()
 
-  "bansIps" should "list banned ips" in {
+  "Scan Banned IPs" should "list banned ips" in {
     // Given
     implicit val session: SlickSession = SlickSession.forConfig(config)
-    val source = new Watcher().bansIps
+    val source = new Watcher().scanBannedIPs
 
     // When
     val result = Await.result(source.runWith(Sink.seq), 1.second)
@@ -29,9 +29,9 @@ class WatcherSpec extends FlatSpec with Matchers {
     result should contain theSameElementsAs List("81.151.82.119", "189.115.221.77", "63.142.101.182")
   }
 
-  "counter" should "list ips and the number of times they were banned" in {
+  "Count Bans per IP" should "count the number of times each IP was banned" in {
     // Given
-    val counter = new Watcher().counter
+    val counter = new Watcher().countBansPerIP
     val ips = Source(List(
       "81.151.82.119",
       "189.115.221.77", "189.115.221.77",
