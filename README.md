@@ -3,9 +3,13 @@ akka-fail2ban-watcher
 
 [![Build Status](https://travis-ci.org/romibuzi/akka-fail2ban-watcher.svg?branch=master)](https://travis-ci.org/romibuzi/akka-fail2ban-watcher)
 
+### Demo
+
+![demo](demo.gif)
+
 ### Requirements
 
-Java8 or newer and recent version of [maven](https://maven.apache.org/) (> 3.5.4) 
+Java8 or newer and recent version of [maven](https://maven.apache.org/) (> 3.5.4)
 
 ### Tests
 
@@ -13,7 +17,7 @@ Java8 or newer and recent version of [maven](https://maven.apache.org/) (> 3.5.4
 mvn clean test
 ```
 
-### Package 
+### Package
 
 ```
 mvn package

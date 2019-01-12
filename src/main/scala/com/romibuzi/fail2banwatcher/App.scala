@@ -24,6 +24,7 @@ object App {
     implicit val mat: ActorMaterializer = ActorMaterializer.create(sys)
     implicit val exc: ExecutionContext = sys.dispatcher
     implicit val session: SlickSession = SlickSession.forConfig(config)
+    appLogger.info("Actor system initialized")
 
     val startTime = LocalDateTime.now()
     val watcher = new Watcher()
@@ -34,9 +35,11 @@ object App {
       .onComplete {
         case Success(counters) =>
           val headers = Array("IP", "Number of Bans")
-          val data = counters.toArray.sortBy(_._2).map { case (ip, bansCount) =>
+          val data = counters.toArray.sortBy(- _._2).take(10).map { case (ip, bansCount) =>
             Array(ip, bansCount.toString)
           }
+          println("Number of distinct banned IPs : " + counters.size)
+          println("Top banned IPs :")
           println(FlipTable.of(headers, data))
 
           appLogger.info(s"Stream successful: ${formatDuration(duration(startTime, LocalDateTime.now))}")
