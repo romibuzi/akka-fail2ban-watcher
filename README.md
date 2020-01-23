@@ -1,6 +1,6 @@
-akka-fail2ban-watcher
+fail2ban-watcher
 ===========
-
+``
 [![Build Status](https://travis-ci.org/romibuzi/akka-fail2ban-watcher.svg?branch=master)](https://travis-ci.org/romibuzi/akka-fail2ban-watcher)
 
 ### Demo
@@ -26,7 +26,7 @@ mvn package
 ### Run
 
 ```
-java -jar target/akka-fail2ban-watcher-0.0.1-shaded.jar
+java -jar target/fail2ban-watcher-0.0.1-shaded.jar
 ```
 
 By default it will try to watch `/var/lib/fail2ban/fail2ban.sqlite3`.

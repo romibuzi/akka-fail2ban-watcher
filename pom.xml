@@ -4,10 +4,10 @@
          xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Akka fail2ban watcher</name>
+    <name>fail2ban watcher</name>
 
     <groupId>com.romibuzi</groupId>
-    <artifactId>akka-fail2ban-watcher</artifactId>
+    <artifactId>fail2ban-watcher</artifactId>
     <packaging>jar</packaging>
 
     <version>0.0.1</version>
@@ -19,16 +19,17 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <scala.version>2.12</scala.version>
-        <scala.exact.version>${scala.version}.8</scala.exact.version>
+        <scala-major.version>2.13</scala-major.version>
+        <scala.exact.version>${scala-major.version}.1</scala.exact.version>
 
-        <scalatest.version>3.0.5</scalatest.version>
-        <akka-stream.version>2.5.19</akka-stream.version>
-        <alpakka.version>1.0-M1</alpakka.version>
-        <scala-logging.version>3.9.0</scala-logging.version>
+        <scalatest.version>3.1.0</scalatest.version>
+
+        <zio.version>1.0.0-RC17</zio.version>
+        <slick.version>3.3.2</slick.version>
+        <sqlite-jdbc.version>3.30.1</sqlite-jdbc.version>
         <logback.version>1.2.3</logback.version>
 
-        <mainClass>com.romibuzi.fail2banwatcher.App</mainClass>
+        <mainClass>com.romibuzi.fail2banwatcher.Fail2BanWatcher</mainClass>
         <skipTests>false</skipTests>
     </properties>
 
@@ -40,29 +41,19 @@
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_${scala.version}</artifactId>
+            <artifactId>scalatest_${scala-major.version}</artifactId>
             <version>${scalatest.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.typesafe.akka</groupId>
-            <artifactId>akka-stream_${scala.version}</artifactId>
-            <version>${akka-stream.version}</version>
+            <groupId>dev.zio</groupId>
+            <artifactId>zio_${scala-major.version}</artifactId>
+            <version>${zio.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.lightbend.akka</groupId>
-            <artifactId>akka-stream-alpakka-slick_${scala.version}</artifactId>
-            <version>${alpakka.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>3.25.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.typesafe.scala-logging</groupId>
-            <artifactId>scala-logging_${scala.version}</artifactId>
-            <version>${scala-logging.version}</version>
+            <groupId>com.typesafe.slick</groupId>
+            <artifactId>slick_${scala-major.version}</artifactId>
+            <version>${slick.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -70,9 +61,9 @@
             <version>${logback.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.jakewharton.fliptables</groupId>
-            <artifactId>fliptables</artifactId>
-            <version>1.0.2</version>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite-jdbc.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -80,7 +71,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>4.3.1</version>
                 <executions>
                     <execution>
                         <id>scala-compile-first</id>
@@ -149,7 +140,6 @@
                         </goals>
                         <configuration>
                             <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>shaded</shadedClassifierName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>reference.conf</resource>
