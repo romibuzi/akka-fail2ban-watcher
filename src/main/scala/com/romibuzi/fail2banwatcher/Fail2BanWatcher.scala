@@ -19,7 +19,7 @@ object Fail2BanWatcher extends App {
     implicit val db: SQLiteProfile.backend.Database = Database.forConfig("bans")
 
     val program = for {
-      startTime        <- currentTime(TimeUnit.SECONDS)
+      startTime        <- currentTime(TimeUnit.MILLISECONDS)
       geoIP            <- GeoIP.loadIP2LocationDatabase("ip2location.csv")
       bannedIPs        <- ZIO.fromFuture { implicit ec => Bans.getBannedIPs }
       locatedBannedIPs <- ZIO.foreach(bannedIPs)(findLocationOfIP(geoIP, _))
@@ -32,8 +32,8 @@ object Fail2BanWatcher extends App {
       _ <- putStrLn(s"\n${Console.YELLOW}Top banned countries :${Console.RESET}")
       _ <- ZIO.foreach(topBannedCountries)(country => putStrLn(s"${country.bansCount} bans : ${country.countryName}"))
 
-      endTime <- currentTime(TimeUnit.SECONDS)
-      _ <- putStrLn(s"\n${Console.GREEN}Analysis completed in ${endTime - startTime} seconds")
+      endTime <- currentTime(TimeUnit.MILLISECONDS)
+      _ <- putStrLn(s"\n${Console.GREEN}Analysis completed in ${(endTime - startTime) / 1000f} seconds")
     } yield ()
 
     program
