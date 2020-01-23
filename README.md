@@ -33,5 +33,5 @@ By default it will try to watch `/var/lib/fail2ban/fail2ban.sqlite3`.
 This can be configured with `FAIL2BAN_DB` environment variable :
 
 ```
-FAIL2BAN_DB=/custom/path/to/fail2ban.sqlite3 java -jar target/akka-fail2ban-watcher-0.0.1-shaded.jar
+FAIL2BAN_DB=/custom/path/to/fail2ban.sqlite3 java -jar target/fail2ban-watcher-0.0.1-shaded.jar
 ```
