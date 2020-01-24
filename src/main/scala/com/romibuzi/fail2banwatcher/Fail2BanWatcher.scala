@@ -50,7 +50,7 @@ object Fail2BanWatcher extends App {
     )
   }
 
-  def getTopBannedCountries(bannedIPs: List[Option[LocatedBannedIP]]): UIO[Seq[BansCountPerCountry]] = {
+  def getTopBannedCountries(bannedIPs: Seq[Option[LocatedBannedIP]]): UIO[Seq[BansCountPerCountry]] = {
     ZIO.succeed(
       bannedIPs
         .flatten
@@ -63,7 +63,7 @@ object Fail2BanWatcher extends App {
     )
   }
 
-  def getTopBannedIPs(bannedIPs: List[Option[LocatedBannedIP]]): UIO[List[LocatedBannedIP]] = {
+  def getTopBannedIPs(bannedIPs: Seq[Option[LocatedBannedIP]]): UIO[Seq[LocatedBannedIP]] = {
     ZIO.succeed(
       bannedIPs
         .flatten
