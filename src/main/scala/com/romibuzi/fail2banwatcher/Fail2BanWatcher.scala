@@ -37,7 +37,7 @@ object Fail2BanWatcher extends App {
     } yield ()
 
     program
-      .onError(error => putStrLn(s"${Console.RED} error happened: ${error.failures.head.getCause}"))
+      .onError(error => putStrLn(s"${Console.RED} Error happened: ${error.failures.head.getMessage}"))
       .fold(_ => 1, _ => 0)
   }
 
