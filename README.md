@@ -35,3 +35,7 @@ This can be configured with `FAIL2BAN_DB` environment variable :
 ```
 FAIL2BAN_DB=/custom/path/to/fail2ban.sqlite3 java -jar target/fail2ban-watcher.jar
 ```
+
+### Credits
+
+This project includes IP2Location LITE data available from http://www.ip2location.com
