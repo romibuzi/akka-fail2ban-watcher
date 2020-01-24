@@ -14,7 +14,7 @@ Java8 or newer and recent version of [maven](https://maven.apache.org/) (> 3.5.4
 ### Tests
 
 ```
-mvn clean test
+mvn test
 ```
 
 ### Package
@@ -26,12 +26,12 @@ mvn package
 ### Run
 
 ```
-java -jar target/fail2ban-watcher-0.0.1-shaded.jar
+java -jar target/fail2ban-watcher.jar
 ```
 
-By default it will try to watch `/var/lib/fail2ban/fail2ban.sqlite3`.
+By default it will try to analyze `/var/lib/fail2ban/fail2ban.sqlite3`.
 This can be configured with `FAIL2BAN_DB` environment variable :
 
 ```
-FAIL2BAN_DB=/custom/path/to/fail2ban.sqlite3 java -jar target/fail2ban-watcher-0.0.1-shaded.jar
+FAIL2BAN_DB=/custom/path/to/fail2ban.sqlite3 java -jar target/fail2ban-watcher.jar
 ```
