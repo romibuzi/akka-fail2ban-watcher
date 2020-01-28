@@ -19,6 +19,7 @@ object Fail2BanWatcher extends App {
     implicit val db: SQLiteProfile.backend.Database = Database.forConfig("bans")
 
     val program = for {
+      _                <- putStrLn(s"${Console.BLUE}Starting analysis${Console.RESET}")
       startTime        <- currentTime(TimeUnit.MILLISECONDS)
       geoIP            <- GeoIP.loadIP2LocationDatabase("ip2location.csv")
       bannedIPs        <- ZIO.fromFuture { implicit ec => Bans.getBannedIPs }
