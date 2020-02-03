@@ -9,18 +9,18 @@ fail2ban-watcher
 
 ### Requirements
 
-Java8 or newer and recent version of [maven](https://maven.apache.org/) (> 3.5.4)
+Java 8 or newer
 
 ### Tests
 
 ```
-mvn test
+./mvnw test
 ```
 
 ### Package
 
 ```
-mvn package
+./mvnw package
 ```
 
 ### Run
