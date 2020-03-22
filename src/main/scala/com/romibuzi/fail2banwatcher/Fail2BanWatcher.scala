@@ -8,8 +8,8 @@ import zio.clock._
 import zio.console._
 import zio.{App, UIO, ZEnv, ZIO}
 
-import scala.Console
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
+import scala.io.AnsiColor
 
 object Fail2BanWatcher extends App {
   val NUMBER_OF_ELEMENTS_TO_DISPLAY = 10
@@ -19,26 +19,26 @@ object Fail2BanWatcher extends App {
     implicit val db: SQLiteProfile.backend.Database = Database.forConfig("bans")
 
     val program = for {
-      _                <- putStrLn(s"${Console.BLUE}Starting analysis${Console.RESET}")
+      _                <- putStrLn(s"${AnsiColor.BLUE}Starting analysis${AnsiColor.RESET}")
       startTime        <- currentTime(TimeUnit.MILLISECONDS)
       geoIP            <- GeoIP.loadIP2LocationDatabase("ip2location.csv")
       bannedIPs        <- ZIO.fromFuture { implicit ec => Bans.getBannedIPs }
       locatedBannedIPs <- ZIO.foreach(bannedIPs)(findLocationOfIP(geoIP, _))
 
       topBannedIps <- getTopBannedIPs(locatedBannedIPs)
-      _ <- putStrLn(s"${Console.YELLOW}Top banned IPs :${Console.RESET}")
+      _ <- putStrLn(s"${AnsiColor.YELLOW}Top banned IPs :${AnsiColor.RESET}")
       _ <- ZIO.foreach(topBannedIps)(ip => putStrLn(s"${ip.bansCount} bans : ${ip.ip}"))
 
       topBannedCountries <- getTopBannedCountries(locatedBannedIPs)
-      _ <- putStrLn(s"\n${Console.YELLOW}Top banned countries :${Console.RESET}")
+      _ <- putStrLn(s"\n${AnsiColor.YELLOW}Top banned countries :${AnsiColor.RESET}")
       _ <- ZIO.foreach(topBannedCountries)(country => putStrLn(s"${country.bansCount} bans : ${country.countryName}"))
 
       endTime <- currentTime(TimeUnit.MILLISECONDS)
-      _ <- putStrLn(s"\n${Console.GREEN}Analysis completed in ${(endTime - startTime) / 1000f} seconds")
+      _ <- putStrLn(s"\n${AnsiColor.GREEN}Analysis completed in ${(endTime - startTime) / 1000f} seconds")
     } yield ()
 
     program
-      .onError(error => putStrLn(s"${Console.RED} Error happened: ${error.failures.head.getMessage}"))
+      .onError(error => putStrLn(s"${AnsiColor.RED} Error happened: ${error.failures.head.getMessage}"))
       .fold(_ => 1, _ => 0)
   }
 
