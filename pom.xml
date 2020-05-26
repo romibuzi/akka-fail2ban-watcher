@@ -20,11 +20,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <scala-major.version>2.13</scala-major.version>
-        <scala.exact.version>${scala-major.version}.1</scala.exact.version>
+        <scala.exact.version>${scala-major.version}.2</scala.exact.version>
 
         <scalatest.version>3.1.0</scalatest.version>
 
-        <zio.version>1.0.0-RC18-2</zio.version>
+        <zio.version>1.0.0-RC20</zio.version>
         <slick.version>3.3.2</slick.version>
         <sqlite-jdbc.version>3.30.1</sqlite-jdbc.version>
         <logback.version>1.2.3</logback.version>

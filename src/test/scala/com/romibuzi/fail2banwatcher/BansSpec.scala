@@ -19,9 +19,9 @@ class BansSpec extends AnyFlatSpec with Matchers {
 
     // Then
     result should contain theSameElementsAs List(
-      BannedIP("81.151.82.119", 3),
-      BannedIP("63.142.101.182", 2),
-      BannedIP("189.115.221.77", 1)
+      UnlocatedBannedIP("81.151.82.119", 3),
+      UnlocatedBannedIP("63.142.101.182", 2),
+      UnlocatedBannedIP("189.115.221.77", 1)
     )
   }
 }
