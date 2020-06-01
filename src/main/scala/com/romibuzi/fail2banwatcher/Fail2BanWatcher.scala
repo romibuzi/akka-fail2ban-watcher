@@ -41,10 +41,11 @@ object Fail2BanWatcher extends App {
   }
 
   def findLocationOfIP(geoIP: GeoIP, bannedIP: UnlocatedBannedIP): IO[UnlocatedBannedIP, LocatedBannedIP] = {
-    IpConverter.ipv4ToLong(bannedIP.ip).flatMap(geoIP.findCountryOfIP) match {
-      case None          => IO.fail(bannedIP)
-      case Some(country) => IO.succeed(LocatedBannedIP(bannedIP.ip, bannedIP.bansCount, country))
-    }
+    IpConverter.ipv4ToLong(bannedIP.ip).flatMap(geoIP.findCountryOfIP)
+      .foldM(
+        _       => IO.fail(bannedIP),
+        country => IO.succeed(LocatedBannedIP(bannedIP.ip, bannedIP.bansCount, country))
+      )
   }
 
   def displayTopBannedCountries(countries: Seq[BansCountPerCountry]): ZIO[Console, Nothing, Unit] = {
@@ -53,7 +54,7 @@ object Fail2BanWatcher extends App {
         _ <- putStrLn(s"\n${AnsiColor.YELLOW}Top banned countries :${AnsiColor.RESET}")
         _ <- ZIO.foreach(countries)(country => putStrLn(s"${country.bansCount} bans : ${country.countryName}"))
       } yield ()
-    } else ZIO.unit
+    } else putStrLn(s"\n${AnsiColor.YELLOW}No top banned countries found${AnsiColor.RESET}")
   }
 
   def displayTopBannedIPs(ips: Seq[BannedIP]): ZIO[Console, Nothing, Unit] = {
@@ -62,7 +63,7 @@ object Fail2BanWatcher extends App {
         _ <- putStrLn(s"\n${AnsiColor.YELLOW}Top banned IPs :${AnsiColor.RESET}")
         _ <- ZIO.foreach(ips)(ip => putStrLn(s"${ip.bansCount} bans : ${ip.ip}"))
       } yield ()
-    } else ZIO.unit
+    } else putStrLn(s"\n${AnsiColor.YELLOW}No top banned IPs found${AnsiColor.RESET}")
   }
 
   def displayUnlocatedIPs(ips: Seq[UnlocatedBannedIP]): ZIO[Console, Nothing, Unit] = {

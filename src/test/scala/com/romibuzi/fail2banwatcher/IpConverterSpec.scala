@@ -1,28 +1,31 @@
 package com.romibuzi.fail2banwatcher
 
-import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
+import zio.test.Assertion._
+import zio.test._
+import zio.test.junit.JUnitRunnableSpec
 
-class IpConverterSpec extends AnyFlatSpec with Matchers {
-  "ipv4ToLong" should "convert a valid IP to long" in {
-    // Given
-    val ip = "126.76.98.12"
+class IpConverterSpec extends JUnitRunnableSpec {
+  def spec: Spec[Environment, TestFailure[Throwable], TestSuccess] = suite("IpConverterSpec")(
+    testM("ipv4ToLong convert a valid IP to long") {
+      // Given
+      val ip = "126.76.98.12"
 
-    // When
-    val result = IpConverter.ipv4ToLong(ip)
+      // When
+      val result = IpConverter.ipv4ToLong(ip)
 
-    // Then
-    result shouldBe Some(2118935052)
-  }
+      // Then
+      assertM(result)(equalTo(2118935052L))
+    },
 
-  "ipv4ToLong" should "not convert an invalid IP" in {
-    // Given
-    val ip = "126.76.98"
+    testM("ipv4ToLong cannot convert an invalid IP") {
+      // Given
+      val ip = "126.76.98"
 
-    // When
-    val result = IpConverter.ipv4ToLong(ip)
+      // When
+      val result = IpConverter.ipv4ToLong(ip)
 
-    // Then
-    result shouldBe None
-  }
+      // Then
+      assertM(result.run)(fails(isSubtype[AssertionError](anything)))
+    }
+  )
 }

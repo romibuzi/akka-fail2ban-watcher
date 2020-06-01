@@ -1,6 +1,6 @@
 package com.romibuzi.fail2banwatcher
 
-import zio.{Task, ZIO}
+import zio.{IO, Task, ZIO}
 
 import scala.annotation.tailrec
 import scala.io.Source
@@ -24,18 +24,15 @@ class GeoIP(val ranges: Array[IPRange]) {
     binarySearch(0, ranges.length - 1)
   }
 
-  def findCountryOfIP(targetIp: Long): Option[Country] =
-    findIPRangeOfIP(targetIp) match {
-      case Some(ipRange) => Some(ipRange.country)
-      case None          => None
-    }
+  def findCountryOfIP(targetIp: Long): IO[Unit, Country] =
+    ZIO.fromOption(findIPRangeOfIP(targetIp).map(range => range.country))
 }
 
 object GeoIP {
   def readResource(path: String): Task[Iterator[String]] =
     Task.effect(Source.fromResource(path).getLines)
 
-  def parseLines(lines: Iterator[String]): Array[IPRange] =
+  def parseLines(lines: Iterator[String]): Array[IPRange] = {
     lines.flatMap { line =>
       line match {
         case s"$start,$end,$countryCode,$countryName" =>
@@ -45,11 +42,11 @@ object GeoIP {
         case _ => None
       }
     }.toArray
+  }
 
-  def loadIP2LocationDatabase(
-    databaseResourcePath: String
-  ): ZIO[Any, Throwable, GeoIP] =
+  def loadIP2LocationDatabase(databaseResourcePath: String): ZIO[Any, Throwable, GeoIP] = {
     readResource(databaseResourcePath)
       .map(parseLines)
       .map(ranges => new GeoIP(ranges))
+  }
 }
