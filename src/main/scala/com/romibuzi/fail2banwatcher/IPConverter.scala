@@ -4,7 +4,7 @@ import zio.{Task, ZIO}
 
 import scala.util.Try
 
-object IpConverter {
+object IPConverter {
   def ipv4ToLong(ip: String): Task[Long] = {
     ZIO.fromTry(
       Try(
