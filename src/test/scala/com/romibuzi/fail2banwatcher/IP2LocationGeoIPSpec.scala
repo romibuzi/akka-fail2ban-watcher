@@ -11,7 +11,7 @@ class IP2LocationGeoIPSpec extends JUnitRunnableSpec {
   val testGeoIPLayer: ZLayer[Any, Nothing, GeoIP] =
     ZLayer.succeed("ip2location_test.csv") >>> IP2LocationGeoIP.live.orDie
 
-  def spec: Spec[Environment, TestFailure[Unit], TestSuccess] = suite("GeoIPSpec")(
+  def spec = suite("GeoIPSpec")(
     testM("GeoIP service can identify the country the given IP") {
       // Given
       val targetIP = 17435137L
