@@ -7,7 +7,7 @@ import zio.test.environment.TestConsole
 import zio.test.junit.JUnitRunnableSpec
 
 class Fail2BanWatcherSpec extends JUnitRunnableSpec {
-  def spec: Spec[Environment, TestFailure[Nothing], TestSuccess] = suite("Fail2BanWatcherSpec")(
+  def spec = suite("Fail2BanWatcherSpec")(
     testM("main run") {
       for {
         exitCode <- Fail2BanWatcher.run(Nil)

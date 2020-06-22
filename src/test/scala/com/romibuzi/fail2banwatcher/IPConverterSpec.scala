@@ -5,7 +5,7 @@ import zio.test._
 import zio.test.junit.JUnitRunnableSpec
 
 class IPConverterSpec extends JUnitRunnableSpec {
-  def spec: Spec[Environment, TestFailure[Throwable], TestSuccess] = suite("IPConverterSpec")(
+  def spec = suite("IPConverterSpec")(
     testM("ipv4ToLong convert a valid IP to long") {
       // Given
       val ip = "126.76.98.12"

@@ -6,7 +6,7 @@ import zio.test._
 import zio.test.junit.JUnitRunnableSpec
 
 class BansSpec extends JUnitRunnableSpec {
-  def spec: Spec[Environment, TestFailure[Throwable], TestSuccess] = suite("BansSpec")(
+  def spec = suite("BansSpec")(
     testM("getBannedIPs list IPs and their respective number of bans") {
       // Given
       val program = for {
