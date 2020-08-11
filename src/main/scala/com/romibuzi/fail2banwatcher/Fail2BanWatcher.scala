@@ -33,10 +33,10 @@ object Fail2BanWatcher extends App {
     bansRepo   <- ZIO.access[BansRepository](_.get)
     bannedIPs  <- bansRepo.getBannedIPs
 
-    (unlocatedBannedIPs, locatedBannedIPs) <- ZIO.partition(bannedIPs)(findLocationOfIP(geoIP, _))
+    (unlocatedBannedIPs: Seq[UnlocatedBannedIP], locatedBannedIPs: Seq[LocatedBannedIP]) <- ZIO.partition(bannedIPs)(findLocationOfIP(geoIP, _))
     _ <- displayUnlocatedIPs(unlocatedBannedIPs)
 
-    topBannedIps <- ZIO.succeed(bansRepo.getTopBannedIPs(locatedBannedIPs ++ unlocatedBannedIPs, nbDisplays))
+    topBannedIps <- ZIO.succeed(bansRepo.getTopBannedIPs(unlocatedBannedIPs ++ locatedBannedIPs, nbDisplays))
     _ <- displayTopBannedIPs(topBannedIps)
 
     topBannedCountries <- ZIO.succeed(bansRepo.getTopBannedCountries(locatedBannedIPs, nbDisplays))
