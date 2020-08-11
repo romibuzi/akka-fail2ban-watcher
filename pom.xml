@@ -25,7 +25,7 @@
         <zio.version>1.0.0</zio.version>
         <zio-slick-interop.version>0.2.0</zio-slick-interop.version>
         <slick.version>3.3.2</slick.version>
-        <sqlite-jdbc.version>3.32.3</sqlite-jdbc.version>
+        <sqlite-jdbc.version>3.32.3.2</sqlite-jdbc.version>
         <logback.version>1.2.3</logback.version>
 
         <mainClass>com.romibuzi.fail2banwatcher.Fail2BanWatcher</mainClass>
