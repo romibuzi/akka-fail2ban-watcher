@@ -22,7 +22,7 @@
         <scala-major.version>2.13</scala-major.version>
         <scala.exact.version>${scala-major.version}.3</scala.exact.version>
 
-        <zio.version>1.0.3</zio.version>
+        <zio.version>1.0.4</zio.version>
         <zio-slick-interop.version>0.2.0</zio-slick-interop.version>
         <slick.version>3.3.3</slick.version>
         <sqlite-jdbc.version>3.32.3.2</sqlite-jdbc.version>
