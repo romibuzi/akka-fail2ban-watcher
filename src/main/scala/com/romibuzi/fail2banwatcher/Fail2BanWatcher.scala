@@ -1,13 +1,14 @@
 package com.romibuzi.fail2banwatcher
 
-import java.util.concurrent.TimeUnit
-
 import com.typesafe.config.{Config, ConfigFactory}
 import slick.interop.zio.DatabaseProvider
 import zio._
 import zio.clock._
 import zio.console._
 
+import java.io.FileNotFoundException
+import java.nio.file.{Files, Paths}
+import java.util.concurrent.TimeUnit
 import scala.io.AnsiColor
 
 object Fail2BanWatcher extends App {
@@ -27,6 +28,9 @@ object Fail2BanWatcher extends App {
   val program: ZIO[Console with Clock with BansRepository with GeoIP, Throwable, Unit] = for {
     _         <- putStrLn(s"${AnsiColor.BLUE}Starting analysis${AnsiColor.RESET}")
     startTime <- currentTime(TimeUnit.MILLISECONDS)
+
+    db_exists <- ZIO.effect(Files.exists(Paths.get(config.getString("db_path"))))
+    _ <- if (!db_exists) ZIO.fail(new FileNotFoundException(s"${config.getString("db_path")} not found")) else ZIO.succeed(Nil)
 
     nbDisplays <- ZIO.effect(config.getInt("number_of_displays"))
     geoIP      <- ZIO.access[GeoIP](_.get)

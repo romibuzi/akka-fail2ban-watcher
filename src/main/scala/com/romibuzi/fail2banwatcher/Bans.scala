@@ -36,14 +36,14 @@ final class SlickBansRepository(db: DatabaseProvider) extends BansRepository.Ser
       .groupMapReduce(_.country)(_.bansCount)(_ + _)
       .map(BansCountPerCountry.tupled)
       .toSeq
-      .sortBy(_.bansCount)
-      .takeRight(limit)
+      .sortWith(_.bansCount > _.bansCount)
+      .take(limit)
   }
 
   def getTopBannedIPs(bannedIPs: Seq[BannedIP], limit: Int): Seq[BannedIP] = {
     bannedIPs
-      .sortBy(_.bansCount)
-      .takeRight(limit)
+      .sortWith(_.bansCount > _.bansCount)
+      .take(limit)
   }
 }
 

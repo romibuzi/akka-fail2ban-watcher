@@ -15,12 +15,12 @@ class Fail2BanWatcherSpec extends JUnitRunnableSpec {
       } yield {
         // refers to src/test/resources/fail2ban_sample.sqlite3 and src/test/resources/ip2location_test.csv
         assert(exitCode)(Assertion.equalTo(ExitCode.success)) &&
-          assert(output)(contains("1 bans: 189.115.221.77\n")) &&
-          assert(output)(contains("2 bans: 63.142.101.182\n")) &&
           assert(output)(contains("3 bans: 81.151.82.119\n")) &&
-          assert(output)(contains("1 bans: Brazil\n")) &&
+          assert(output)(contains("2 bans: 63.142.101.182\n")) &&
+          assert(output)(contains("1 bans: 189.115.221.77\n")) &&
+          assert(output)(contains("3 bans: United Kingdom of Great Britain and Northern Ireland\n")) &&
           assert(output)(contains("2 bans: United States of America\n")) &&
-          assert(output)(contains("3 bans: United Kingdom of Great Britain and Northern Ireland\n"))
+          assert(output)(contains("1 bans: Brazil\n"))
       }
     },
   )
