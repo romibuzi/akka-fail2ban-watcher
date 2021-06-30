@@ -20,7 +20,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <scala-major.version>2.13</scala-major.version>
-        <scala.exact.version>2.13.5</scala.exact.version>
+        <scala.exact.version>2.13.6</scala.exact.version>
 
         <zio.version>1.0.4-2</zio.version>
         <zio-slick-interop.version>0.2.0</zio-slick-interop.version>
