@@ -54,7 +54,7 @@ object Fail2BanWatcher extends App {
     program
       .provideCustomLayer(bansRepositoryLayer ++ ip2locationGeoIPLayer)
       .onError(error =>
-        putStrLn(s"\n${AnsiColor.RED}Something went wrong: ${error.failures.head.getMessage} ${AnsiColor.RESET}")
+        putStrLn(s"\n${AnsiColor.RED}Something went wrong: ${error.failures.head.getMessage} ${AnsiColor.RESET}").ignore
       )
       .as(ExitCode.success)
       .orElse(ZIO.succeed(ExitCode.failure))
@@ -72,26 +72,26 @@ object Fail2BanWatcher extends App {
   def displayTopBannedCountries(bansPerCountry: Seq[BansCountPerCountry]): ZIO[Console, Nothing, Unit] = {
     if (bansPerCountry.nonEmpty) {
       for {
-        _ <- putStrLn(s"\n${AnsiColor.YELLOW}Top banned countries:${AnsiColor.RESET}")
-        _ <- ZIO.foreach(bansPerCountry)(bansForCountry => putStrLn(s"${bansForCountry.bansCount} bans: ${bansForCountry.country.name}"))
+        _ <- putStrLn(s"\n${AnsiColor.YELLOW}Top banned countries:${AnsiColor.RESET}").orDie
+        _ <- ZIO.foreach(bansPerCountry)(bansForCountry => putStrLn(s"${bansForCountry.bansCount} bans: ${bansForCountry.country.name}").orDie)
       } yield ()
-    } else putStrLn(s"\n${AnsiColor.YELLOW}No top banned countries found${AnsiColor.RESET}")
+    } else putStrLn(s"\n${AnsiColor.YELLOW}No top banned countries found${AnsiColor.RESET}").orDie
   }
 
   def displayTopBannedIPs(ips: Seq[BannedIP]): ZIO[Console, Nothing, Unit] = {
     if (ips.nonEmpty) {
       for {
-        _ <- putStrLn(s"\n${AnsiColor.YELLOW}Top banned IPs:${AnsiColor.RESET}")
-        _ <- ZIO.foreach(ips)(ip => putStrLn(s"${ip.bansCount} bans: ${ip.ip}"))
+        _ <- putStrLn(s"\n${AnsiColor.YELLOW}Top banned IPs:${AnsiColor.RESET}").orDie
+        _ <- ZIO.foreach(ips)(ip => putStrLn(s"${ip.bansCount} bans: ${ip.ip}").orDie)
       } yield ()
-    } else putStrLn(s"\n${AnsiColor.YELLOW}No top banned IPs found${AnsiColor.RESET}")
+    } else putStrLn(s"\n${AnsiColor.YELLOW}No top banned IPs found${AnsiColor.RESET}").orDie
   }
 
   def displayUnlocatedIPs(ips: Seq[UnlocatedBannedIP]): ZIO[Console, Nothing, Unit] = {
     if (ips.nonEmpty) {
       for {
-        _ <- putStrLn(s"\n${AnsiColor.RED}Could not locate following IPs:${AnsiColor.RESET}")
-        _ <- ZIO.foreach(ips)(ip => putStrLn(ip.ip))
+        _ <- putStrLn(s"\n${AnsiColor.RED}Could not locate following IPs:${AnsiColor.RESET}").orDie
+        _ <- ZIO.foreach(ips)(ip => putStrLn(ip.ip).orDie)
       } yield ()
     } else ZIO.unit
   }
