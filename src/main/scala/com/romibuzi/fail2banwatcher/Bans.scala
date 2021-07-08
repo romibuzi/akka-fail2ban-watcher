@@ -4,7 +4,7 @@ import slick.interop.zio.DatabaseProvider
 import slick.interop.zio.syntax._
 import slick.jdbc.SQLiteProfile.api._
 import slick.lifted.{ProvenShape, Tag}
-import zio.{Task, ZIO, ZLayer}
+import zio.{Has, Task, ZIO, ZLayer}
 
 object BansTable {
   class Bans(tag: Tag) extends Table[(String, String, Long)](tag, "bans") {
@@ -17,7 +17,7 @@ object BansTable {
   val table = TableQuery[BansTable.Bans]
 }
 
-final class SlickBansRepository(db: DatabaseProvider) extends BansRepository.Service {
+final class SlickBansRepository(db: Has[DatabaseProvider]) extends BansRepository.Service {
   def getBannedIPs: Task[Seq[UnlocatedBannedIP]] = {
     val query = BansTable.table
       .groupBy(_.ip)
@@ -48,7 +48,7 @@ final class SlickBansRepository(db: DatabaseProvider) extends BansRepository.Ser
 }
 
 object SlickBansRepository {
-  val live: ZLayer[DatabaseProvider, Throwable, BansRepository] =
+  val live: ZLayer[Has[DatabaseProvider], Throwable, BansRepository] =
     ZLayer.fromFunctionM { db =>
       ZIO.succeed(new SlickBansRepository(db))
     }

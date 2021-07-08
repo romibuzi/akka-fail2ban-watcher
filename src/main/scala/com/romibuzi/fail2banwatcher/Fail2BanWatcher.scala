@@ -2,6 +2,7 @@ package com.romibuzi.fail2banwatcher
 
 import com.typesafe.config.{Config, ConfigFactory}
 import slick.interop.zio.DatabaseProvider
+import slick.jdbc.JdbcProfile
 import zio._
 import zio.clock._
 import zio.console._
@@ -16,7 +17,7 @@ object Fail2BanWatcher extends App {
 
   val bansRepositoryLayer: ZLayer[Any, Throwable, BansRepository] = {
     val dbConfigLayer = ZLayer.fromEffect(ZIO.effect(config.getConfig("bans")))
-    val dbBackendLayer = ZLayer.succeed(slick.jdbc.SQLiteProfile.backend)
+    val dbBackendLayer = ZLayer.succeed[JdbcProfile](slick.jdbc.SQLiteProfile)
 
     (dbConfigLayer ++ dbBackendLayer) >>> DatabaseProvider.live >>> SlickBansRepository.live
   }
